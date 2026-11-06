@@ -1,0 +1,477 @@
+#include <string>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+const int TamLinhaNormal = 4;
+const int TamColunaNormal = 6;
+const int qtdCartasNormal = 24;
+const int TamLinhaRapida = 3;
+const int TamColunaRapida = 6;
+const int qtdCartasRapida = 18;
+
+// modulos
+void qtdJogadores(int &qtd);
+
+void cadastroJogadores(string &jogador1, string &jogador2, int qtd);
+
+void modoJogo(int &modo);
+
+void inicialiazarTabuleiroNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal]);
+void inicialiazarTabuleiroRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida]);
+
+void inicialiazarTabuleiroVisivelNormal(int visivelNormal[TamLinhaNormal][TamColunaNormal]);
+void inicialiazarTabuleiroVisivelRapida(int visivelRapida[TamLinhaRapida][TamColunaRapida]);
+
+void exibirTabuleiroNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal]);
+void exibirTabuleiroRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida]);
+
+void embaralharCartasNormal(int cartasNormal[], int qtdCartasNormal);
+void embaralharCartasRapida(int cartasRapida[], int qtdCartasRapida);
+
+void preencherTabuleiroNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal], int cartasNormal[]);
+void preencherTabuleiroRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida], int cartasRapida[]);
+
+void jogarNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal], int visivelNormal[TamLinhaNormal][TamColunaNormal], string jogador1, string jogador2, int qtd);
+void jogarRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida], int visivelRapida[TamLinhaRapida][TamColunaRapida], string jogador1, string jogador2, int qtd);
+
+int main()
+{
+    srand(time(0));
+    int qtd;
+    int tabuleiroNormal[TamLinhaNormal][TamColunaNormal];
+    int visivelNormal[TamLinhaNormal][TamColunaNormal];
+    int tabuleiroRapida[TamLinhaRapida][TamColunaRapida];
+    int visivelRapida[TamLinhaRapida][TamColunaRapida];
+    
+    int cartasNormal[qtdCartasNormal] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12};
+    int cartasRapida[qtdCartasRapida] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9};
+
+    string jogador1, jogador2;
+    int modo;
+    
+    qtdJogadores(qtd);
+    cadastroJogadores(jogador1, jogador2, qtd);
+
+    modoJogo(modo);
+
+    if ( modo == 1){
+        inicialiazarTabuleiroNormal(tabuleiroNormal);
+        inicialiazarTabuleiroVisivelNormal(visivelNormal);
+        embaralharCartasNormal(cartasNormal, qtdCartasNormal);
+        preencherTabuleiroNormal(tabuleiroNormal, cartasNormal);
+        exibirTabuleiroNormal(visivelNormal);
+        jogarNormal(tabuleiroNormal, visivelNormal, jogador1, jogador2, qtd);
+    
+    }
+    
+    else{
+        inicialiazarTabuleiroRapida(tabuleiroRapida);
+        inicialiazarTabuleiroVisivelRapida(visivelRapida);
+
+        embaralharCartasRapida(cartasRapida, qtdCartasRapida);
+
+        preencherTabuleiroRapida(tabuleiroRapida, cartasRapida);
+
+        exibirTabuleiroRapida(visivelRapida);
+
+        jogarRapida(tabuleiroRapida, visivelRapida, jogador1, jogador2, qtd);
+    }
+
+    return 0;
+}
+
+void qtdJogadores(int &qtd){
+    cout << "Qual a quantidade de jogadores? 1 (um jogador) ou 2 (dois jogadores): ";
+    cin >> qtd;
+}
+
+void cadastroJogadores(string &jogador1, string &jogador2, int qtd)
+{
+    cout << " CADASTRO DE JOGADORES " << endl;
+
+    cout << " escreva o nome do primeiro jogador: " << endl;
+    cin >> jogador1;
+
+    if(qtd == 2){
+        cout << " escreva o nome do segundo jogador: " << endl;
+        cin >> jogador2;
+    }
+    cout << "bem-vindos " << jogador1;
+    if(qtd == 2){
+        cout << " e " << jogador2;
+    }
+    cout << ", e boa sorte!" << endl;
+}
+
+void modoJogo(int &modo){
+    cout << "Escreva 1 para modo de jogo normal(24 cartas) ou 2 para modo de jogo rapido(18 cartas):";
+    cin >> modo;
+}
+
+void inicialiazarTabuleiroNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal])
+{
+    for (int i = 0; i < TamLinhaNormal; i++)
+    {
+        for (int j = 0; j < TamColunaNormal; j++)
+        {
+            tabuleiroNormal[i][j] = 0;
+        }
+    }
+}
+
+void inicialiazarTabuleiroVisivelNormal(int visivelNormal[TamLinhaNormal][TamColunaNormal])
+{
+    for (int i = 0; i < TamLinhaNormal; i++)
+    {
+        for (int j = 0; j < TamColunaNormal; j++)
+        {
+            visivelNormal[i][j] = 0;
+        }
+    }
+}
+
+void exibirTabuleiroNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal])
+{
+    int colunaNormal = 1;
+
+    cout << "TABULEIRO DO JOGO DA MEMORIA:" << endl;
+    cout << "   1  2  3  4  5  6" << endl;
+
+    for (int i = 0; i < TamLinhaNormal; i++)
+    {
+        cout << colunaNormal << " ";
+
+        colunaNormal++;
+
+        for (int j = 0; j < TamColunaNormal; j++)
+        {
+            cout << "[" << tabuleiroNormal[i][j] << "]";
+        }
+
+        cout << endl;
+    }
+}
+
+void embaralharCartasNormal(int cartasNormal[], int qtdCartasNormal)
+{
+    for (int i = 0; i < qtdCartasNormal; i++)
+    {
+        int posicaoNormal = rand() % qtdCartasNormal;
+
+        int temporariaNormal = cartasNormal[i];
+        cartasNormal[i] = cartasNormal[posicaoNormal];
+        cartasNormal[posicaoNormal] = temporariaNormal;
+    }
+}
+
+void preencherTabuleiroNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal], int cartasNormal[])
+{
+    int cartinhasNormal = 0;
+    for (int i = 0; i < TamLinhaNormal; i++)
+    {
+        for (int j = 0; j < TamColunaNormal; j++)
+        {
+            tabuleiroNormal[i][j] = cartasNormal[cartinhasNormal];
+            cartinhasNormal++;
+        }
+    }
+}
+
+void jogarNormal(int tabuleiroNormal[TamLinhaNormal][TamColunaNormal], int visivelNormal[TamLinhaNormal][TamColunaNormal], string jogador1, string jogador2, int qtd){
+    int paresNormal = 0;
+    int linha1Normal = 0;
+    int coluna1Normal = 0;
+    int linha2Normal = 0;
+    int coluna2Normal = 0;
+    int pontos1Normal = 0;
+    int pontos2Normal = 0;
+
+    while (paresNormal < 12)
+    {
+        cout << jogador1 << " informe a linha da primeira carta: " << endl;
+        cin >> linha1Normal;
+        cout << jogador1 << " informe a coluna da primeira carta: " << endl;
+        cin >> coluna1Normal;
+        cout << jogador1 << " informe a linha da segunda carta: " << endl;
+        cin >> linha2Normal;
+        cout << jogador1 << " informe a coluna da segunda carta: " << endl;
+        cin >> coluna2Normal;
+
+        linha1Normal--;
+        coluna1Normal--;
+        linha2Normal--;
+        coluna2Normal--;
+
+        if (linha1Normal < 0 || linha1Normal >= TamLinhaNormal || coluna1Normal < 0 || coluna1Normal >= TamColunaNormal || linha2Normal < 0 || linha2Normal >= TamLinhaNormal || coluna2Normal < 0 || coluna2Normal >= TamColunaNormal){
+            cout << "Posicao invalida!" << endl;
+        }
+        else
+        {
+            cout << "[" << tabuleiroNormal[linha1Normal][coluna1Normal] << "] "
+                 << "[" << tabuleiroNormal[linha2Normal][coluna2Normal] << "]";
+
+            if (tabuleiroNormal[linha1Normal][coluna1Normal] == tabuleiroNormal[linha2Normal][coluna2Normal])
+            {
+                cout << " -> sao iguais!" << endl;
+                pontos1Normal++;
+                visivelNormal[linha1Normal][coluna1Normal] = tabuleiroNormal[linha1Normal][coluna1Normal];
+                visivelNormal[linha2Normal][coluna2Normal] = tabuleiroNormal[linha2Normal][coluna2Normal];
+                paresNormal++;
+            }
+            else
+            {
+                cout << " -> nao sao iguais! : (" << endl;
+            }
+        }
+        exibirTabuleiroNormal(visivelNormal);
+        if (paresNormal >= 12)
+        {
+            break;
+        }
+        if(qtd == 2){
+            cout << endl;
+            cout << jogador2 << " informe a linha da primeira carta: " << endl;
+            cin >> linha1Normal;
+            cout << jogador2 << " informe a coluna da primeira carta: " << endl;
+            cin >> coluna1Normal;
+            cout << jogador2 << " informe a linha da segunda carta: " << endl;
+            cin >> linha2Normal;
+            cout << jogador2 << " informe a coluna da segunda carta: " << endl;
+            cin >> coluna2Normal;
+
+            linha1Normal--;
+            coluna1Normal--;
+            linha2Normal--;
+            coluna2Normal--;
+
+            if (linha1Normal < 0 || linha1Normal >= TamLinhaNormal || coluna1Normal < 0 || coluna1Normal >= TamColunaNormal || linha2Normal < 0 || linha2Normal >= TamLinhaNormal || coluna2Normal < 0 || coluna2Normal >= TamColunaNormal)
+            {
+              cout << "Posicao invalida!" << endl;
+            }
+             else
+            {
+                cout << "[" << tabuleiroNormal[linha1Normal][coluna1Normal] << "] "
+                    << "[" << tabuleiroNormal[linha2Normal][coluna2Normal] << "]";
+               if (tabuleiroNormal[linha1Normal][coluna1Normal] == tabuleiroNormal[linha2Normal][coluna2Normal])
+                {
+                   cout << " -> sao iguais!" << endl;
+                   pontos2Normal++;
+                   visivelNormal[linha1Normal][coluna1Normal] = tabuleiroNormal[linha1Normal][coluna1Normal];
+                   visivelNormal[linha2Normal][coluna2Normal] = tabuleiroNormal[linha2Normal][coluna2Normal];
+                   paresNormal++;
+                }
+               else
+               {
+                   cout << " -> nao sao iguais! : (" << endl;
+               }
+           }
+        }
+        exibirTabuleiroNormal(visivelNormal);
+        cout << endl;
+        cout << "Pontuacao atual:" << endl;
+        cout << jogador1 << ": " << pontos1Normal << endl;
+        if(qtd ==2){
+           cout << jogador2 << ": " << pontos2Normal << endl;
+        }
+    }
+    cout << endl;
+    cout << "FIM DO JOGO!" << endl;
+    cout << jogador1 << ": " << pontos1Normal << " pontos" << endl;
+    if(qtd ==2){
+        cout << jogador2 << ": " << pontos2Normal << " pontos" << endl;
+    }
+    if (pontos1Normal > pontos2Normal)
+    {
+        cout << "Vencedor: " << jogador1 << "!" << endl;
+    }
+    else
+    {
+        cout << "Vencedor: " << jogador2 << "!" << endl;
+    }
+}
+
+void inicialiazarTabuleiroRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida])
+{
+    for (int i = 0; i < TamLinhaRapida; i++)
+    {
+        for (int j = 0; j < TamColunaRapida; j++)
+        {
+            tabuleiroRapida[i][j] = 0;
+        }
+    }
+}
+
+void inicialiazarTabuleiroVisivelRapida(int visivelRapida[TamLinhaRapida][TamColunaRapida])
+{
+    for (int i = 0; i < TamLinhaRapida; i++)
+    {
+        for (int j = 0; j < TamColunaRapida; j++)
+        {
+            visivelRapida[i][j] = 0;
+        }
+    }
+}
+
+void exibirTabuleiroRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida])
+{
+    int colunaRapida = 1;
+
+    cout << "TABULEIRO DO JOGO DA MEMORIA:" << endl;
+    cout << "   1  2  3  4  5  6" << endl;
+
+    for (int i = 0; i < TamLinhaRapida; i++)
+    {
+        cout << colunaRapida << " ";
+
+        colunaRapida++;
+
+        for (int j = 0; j < TamColunaRapida; j++)
+        {
+            cout << "[" << tabuleiroRapida[i][j] << "]";
+        }
+
+        cout << endl;
+    }
+}
+
+void embaralharCartasRapida(int cartasRapida[], int qtdCartasRapida)
+{
+    for (int i = 0; i < qtdCartasRapida; i++)
+    {
+        int posicaoRapida = rand() % qtdCartasRapida;
+
+        int temporariaRapida = cartasRapida[i];
+        cartasRapida[i] = cartasRapida[posicaoRapida];
+        cartasRapida[posicaoRapida] = temporariaRapida;
+    }
+}
+
+void preencherTabuleiroRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida], int cartasRapida[])
+{
+    int cartinhas = 0;
+    for (int i = 0; i < TamLinhaRapida; i++)
+    {
+        for (int j = 0; j < TamColunaRapida; j++)
+        {
+            tabuleiroRapida[i][j] = cartasRapida[cartinhas];
+            cartinhas++;
+        }
+    }
+}
+
+void jogarRapida(int tabuleiroRapida[TamLinhaRapida][TamColunaRapida], int visivelRapida[TamLinhaRapida][TamColunaRapida], string jogador1, string jogador2, int qtd){
+    int paresRapida = 0;
+    int linha1Rapida = 0;
+    int coluna1Rapida = 0;
+    int linha2Rapida = 0;
+    int coluna2Rapida = 0;
+    int pontos1Rapida = 0;
+    int pontos2Rapida = 0;
+
+    while (paresRapida < 12)
+    {
+        cout << jogador1 << " informe a linha da primeira carta: " << endl;
+        cin >> linha1Rapida;
+        cout << jogador1 << " informe a coluna da primeira carta: " << endl;
+        cin >> coluna1Rapida;
+        cout << jogador1 << " informe a linha da segunda carta: " << endl;
+        cin >> linha2Rapida;
+        cout << jogador1 << " informe a coluna da segunda carta: " << endl;
+        cin >> coluna2Rapida;
+
+        linha1Rapida--;
+        coluna1Rapida--;
+        linha2Rapida--;
+        coluna2Rapida--;
+
+        if (linha1Rapida < 0 || linha1Rapida >= TamLinhaRapida || coluna1Rapida < 0 || coluna1Rapida >= TamColunaRapida || linha2Rapida < 0 || linha2Rapida >= TamLinhaRapida || coluna2Rapida < 0 || coluna2Rapida >= TamColunaRapida){
+            cout << "Posicao invalida!" << endl;
+        }
+        else
+        {
+            cout << "[" << tabuleiroRapida[linha1Rapida][coluna1Rapida] << "] "
+                 << "[" << tabuleiroRapida[linha2Rapida][coluna2Rapida] << "]";
+
+            if (tabuleiroRapida[linha1Rapida][coluna1Rapida] == tabuleiroRapida[linha2Rapida][coluna2Rapida])
+            {
+                cout << " -> sao iguais!" << endl;
+                pontos1Rapida++;
+                visivelRapida[linha1Rapida][coluna1Rapida] = tabuleiroRapida[linha1Rapida][coluna1Rapida];
+                visivelRapida[linha2Rapida][coluna2Rapida] = tabuleiroRapida[linha2Rapida][coluna2Rapida];
+                paresRapida++;
+            }
+            else
+            {
+                cout << " -> nao sao iguais! : (" << endl;
+            }
+        }
+        exibirTabuleiroRapida(visivelRapida);
+        if (paresRapida >= 12)
+        {
+            break;
+        }
+        
+        if(qtd ==2){
+           cout << endl;
+           cout << jogador2 << " informe a linha da primeira carta: " << endl;
+           cin >> linha1Rapida;
+           cout << jogador2 << " informe a coluna da primeira carta: " << endl;
+           cin >> coluna1Rapida;
+           cout << jogador2 << " informe a linha da segunda carta: " << endl;
+           cin >> linha2Rapida;
+           cout << jogador2 << " informe a coluna da segunda carta: " << endl;
+           cin >> coluna2Rapida;
+
+           linha1Rapida--;
+           coluna1Rapida--;
+           linha2Rapida--;
+           coluna2Rapida--;
+
+           if (linha1Rapida < 0 || linha1Rapida >= TamLinhaRapida || coluna1Rapida < 0 || coluna1Rapida >= TamColunaRapida || linha2Rapida < 0 || linha2Rapida >= TamLinhaRapida || coluna2Rapida < 0 || coluna2Rapida >= TamColunaRapida)
+           {
+               cout << "Posicao invalida!" << endl;
+           }
+           else
+           {
+               cout << "[" << tabuleiroRapida[linha1Rapida][coluna1Rapida] << "] "
+                    << "[" << tabuleiroRapida[linha2Rapida][coluna2Rapida] << "]";
+               if (tabuleiroRapida[linha1Rapida][coluna1Rapida] == tabuleiroRapida[linha2Rapida][coluna2Rapida])
+               {
+                   cout << " -> sao iguais!" << endl;
+                   pontos2Rapida++;
+                   visivelRapida[linha1Rapida][coluna1Rapida] = tabuleiroRapida[linha1Rapida][coluna1Rapida];
+                   visivelRapida[linha2Rapida][coluna2Rapida] = tabuleiroRapida[linha2Rapida][coluna2Rapida];
+                   paresRapida++;
+               }
+               else
+               {
+                   cout << " -> nao sao iguais! : (" << endl;
+               }
+           }
+        }
+        exibirTabuleiroRapida(visivelRapida);
+        cout << endl;
+        cout << "Pontuacao atual:" << endl;
+        cout << jogador1 << ": " << pontos1Rapida << endl;
+        if(qtd ==2){
+           cout << jogador2 << ": " << pontos2Rapida << endl;
+        }   
+    }
+    cout << endl;
+    cout << "FIM DO JOGO!" << endl;
+    cout << jogador1 << ": " << pontos1Rapida << " pontos" << endl;
+    if(qtd ==2){
+       cout << jogador2 << ": " << pontos2Rapida << " pontos" << endl;
+    }
+    if (pontos1Rapida > pontos2Rapida)
+    {
+        cout << "Vencedor: " << jogador1 << "!" << endl;
+    }
+    else
+    {
+        cout << "Vencedor: " << jogador2 << "!" << endl;
+    }
+}
