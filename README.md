@@ -25,11 +25,11 @@ O jogo termina quando todos os pares forem encontrados, e o placar final é exib
 Exemplo do tabuleiro durante o jogo:
 
 TABULEIRO DO JOGO DA MEMORIA:
-   1  2  3  4  5  6
-1 [0][0][7][0][0][0]
-2 [0][0][0][0][0][0]
-3 [0][0][7][0][0][0]
-4 [0][0][0][0][0][0]
+      1  2  3  4  5  6
+   1 [0][0][7][0][0][0]
+   2 [0][0][0][0][0][0]
+   3 [0][0][7][0][0][0]
+   4 [0][0][0][0][0][0]
 Como compilar e executar
 
 Requer um compilador C++ (por exemplo, o g++). O projeto usa apenas bibliotecas padrão (iostream, string, cstdlib, ctime), então funciona em Windows, Linux e macOS.
